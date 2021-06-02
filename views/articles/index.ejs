@@ -8,5 +8,12 @@
 </head>
 <body>
     <h1>This is html</h1>
+    <% articles.forEach(article => { %>
+        <div>
+            <h1><%= article.title %> </h1>
+            <p><%= article.createdAt.toLocaleDateString() %></p>
+            <p><%= article.description %></p>
+        </div>
+    <% }) %> 
 </body>
 </html>
