@@ -3,11 +3,37 @@ const Article = require('../models/articles')
 const router = express.Router()
 
 router.get('/new', (req, res) => {
-    res.send('articles/new')
+    res.render('articles/new', { article: new Article() })
 })
 
-router.post('/', (req,res) => {
-    const article = new Article()
+router.get('/:slug', async (req, res) => {
+    const article = await Article.findOne({slug: req.params.slug})
+    console.log(article)
+    if (article == null) res.redirect('/')
+    try {
+        res.render('articles/show', {article: article})
+    } catch(error) {
+        console.log(error)
+    }
+})
+
+router.post('/', async (req,res) => {
+    let article = new Article({
+        title: req.body.title,
+        description: req.body.description,
+        markdown: req.body.markdown,
+    })
+    try {
+        await article.save()
+        res.redirect(`/articles/${article.slug}`)
+    } catch(error) {
+        res.render('articles/new', {article: article})
+    }
+})
+
+router.delete('/:id', async (req, res) => {
+    await Article.findByIdAndDelete(req.params.id)
+    res.redirect('/')
 })
 
 module.exports = router

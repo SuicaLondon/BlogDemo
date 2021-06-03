@@ -7,10 +7,14 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>New Article</h1>
+    <h1><%= article.title %></h1>
+    <p><%= article.createdAt.toLocaleDateString() %> </p>
+    
+    <a href="/">All Articles</a>
+    <a href="/articles/edit/<%= article.id %> ">Edit Article </a>
 
-    <form action="/articles" method="POST">
-        <%- include('_form_fields') %> 
-    </form>
+    <div>
+        <%= article.markdown %> 
+    </div>
 </body>
 </html>
